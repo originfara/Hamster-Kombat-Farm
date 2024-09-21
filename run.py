@@ -106,11 +106,11 @@ def main(auth, proxies):
         data = resp.json()
         username = data.get('telegramUser', {}).get('firstName', 0)
 
-        balanceGet = req.post('https://api.hamsterkombat.io/clicker/tap', headers=head, proxies=proxies, json={
+        balanceGet = req.post('https://api.hamsterkombatgame.io/interlude/sync', headers=head, proxies=proxies, json={
             "availableTaps": 7994, "count": 1, "timestamp": 1718457917})
         balanceGet.raise_for_status()
         dataBalance = balanceGet.json()
-        balance = dataBalance.get('clickerUser', {}).get('balanceCoins', 0)
+        balance = dataBalance.get('interludeUser', {}).get('balanceDiamonds', 0)
         with print_lock:
             print(f"\033[96m{username}\033[0m")
             print(f"\033[92mБаланс:\033[0m {balance}")
@@ -121,10 +121,10 @@ def main(auth, proxies):
 
         while main_thread_running:
             try:
-                post_id = req.post('https://api.hamsterkombat.io/clicker/sync', headers=head, proxies=proxies)
+                post_id = req.post('https://api.hamsterkombatgame.io/interlude/sync', headers=head, proxies=proxies)
                 post_id.raise_for_status()
                 collect = post_id.json()
-                claim = collect.get('clickerUser', {}).get('balanceCoins', 0)
+                claim = collect.get('interludeUser', {}).get('balanceDiamonds', 0)
                 with print_lock:
                     print(f"\033[92mБаланс:\033[0m {claim:.2f}")
 
@@ -204,7 +204,7 @@ def menu():
         print("\033[96mver 0.1Beta\033[0m")
         print("\033[93mМеню:\033[0m")
         print("1. \033[92mСтарт\033[0m")
-        print(f"2. Автокликер \033[94m{'включён' if auto_clicker_enabled else 'выключен'}\033[0m")
+        print(f"2. Автокликер (Не работает!) \033[94m{'включён' if auto_clicker_enabled else 'выключен'}\033[0m")
         print("3. \033[94mПрокси\033[0m")
         print("4. \033[94mУстановить диапазон времени сбора\033[0m")
         print("5. \033[91mВыход\033[0m")
